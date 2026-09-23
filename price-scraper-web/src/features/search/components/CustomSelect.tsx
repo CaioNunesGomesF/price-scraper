@@ -37,7 +37,14 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   }, []);
 
   return (
-    <div ref={containerRef} style={{ ...styles.selectContainer, width }}>
+    <div
+      ref={containerRef}
+      style={{
+        ...styles.selectContainer,
+        width,
+        zIndex: isOpen ? 1000 : 1,
+      }}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -134,7 +141,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "14px",
     boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)",
     padding: "6px",
-    zIndex: 999,
+    zIndex: 9999,
     display: "flex",
     flexDirection: "column",
     gap: "2px",

@@ -146,7 +146,14 @@ export const PlatformMultiSelect: React.FC<PlatformMultiSelectProps> = ({
   };
 
   return (
-    <div ref={containerRef} style={{ ...styles.selectContainer, width }}>
+    <div
+      ref={containerRef}
+      style={{
+        ...styles.selectContainer,
+        width,
+        zIndex: isOpen ? 1000 : 1,
+      }}
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -323,7 +330,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "14px",
     boxShadow: "0 12px 30px rgba(0, 0, 0, 0.12)",
     padding: "8px",
-    zIndex: 999,
+    zIndex: 9999,
     display: "flex",
     flexDirection: "column",
     gap: "2px",

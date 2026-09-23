@@ -318,6 +318,8 @@ export default function App() {
                         flexDirection: "column",
                         alignItems: "center",
                         maxWidth: "660px",
+                        position: "relative",
+                        zIndex: 50,
                         filter: "drop-shadow(0 0 24px rgba(108,92,231,0.15))",
                       }}
                     >
@@ -326,7 +328,7 @@ export default function App() {
 
                     {/* Overlapping Platform Logos */}
                     <div
-                      style={{ ...styles.platformLogoWrapper, marginTop: "64px" }}
+                      style={{ ...styles.platformLogoWrapper, marginTop: "64px", position: "relative", zIndex: 1 }}
                       onClick={() => setIsModalOpen(true)}
                     >
                       <span style={styles.platformLogoText}>Buscando em:</span>

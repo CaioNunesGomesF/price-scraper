@@ -95,7 +95,15 @@ export const FilterStrip: React.FC<FilterStripProps> = ({
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  filterStrip: { display: "flex", flexWrap: "wrap" as const, gap: "8px", alignItems: "center", width: "100%" },
+  filterStrip: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "8px",
+    alignItems: "center",
+    width: "100%",
+    position: "relative",
+    zIndex: 60,
+  },
   priceInputs: { display: "flex", alignItems: "center", gap: "6px" },
   priceInput: { width: "70px", backgroundColor: "#ffffff", border: "1px solid var(--border)", borderRadius: "24px", color: "var(--text-primary)", padding: "8px 10px", fontSize: "12px", fontWeight: 600, textAlign: "center" as const, outline: "none", transition: "var(--transition)" },
   priceDivider: { color: "var(--text-muted)", fontSize: "12px" },

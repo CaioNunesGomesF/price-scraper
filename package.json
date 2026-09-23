@@ -1,0 +1,19 @@
+{
+  "name": "price-scraper-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "price-scraper-api",
+    "price-scraper-web"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix price-scraper-api\" \"npm run dev --prefix price-scraper-web\"",
+    "dev:api": "npm run dev --prefix price-scraper-api",
+    "dev:web": "npm run dev --prefix price-scraper-web",
+    "build:web": "npm run build --prefix price-scraper-web",
+    "install:all": "npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

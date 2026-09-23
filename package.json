@@ -7,11 +7,10 @@
     "price-scraper-web"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix price-scraper-api\" \"npm run dev --prefix price-scraper-web\"",
-    "dev:api": "npm run dev --prefix price-scraper-api",
-    "dev:web": "npm run dev --prefix price-scraper-web",
-    "build:web": "npm run build --prefix price-scraper-web",
-    "install:all": "npm install"
+    "dev": "concurrently \"npm run dev -w price-scraper-api\" \"npm run dev -w price-scraper-web\"",
+    "dev:api": "npm run dev -w price-scraper-api",
+    "dev:web": "npm run dev -w price-scraper-web",
+    "build": "npm run build -w price-scraper-web"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

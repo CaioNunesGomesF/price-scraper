@@ -114,7 +114,7 @@ export const AnalyticsDashboardView: React.FC = () => {
       toolbar: { show: false },
       fontFamily: "'Plus Jakarta Sans', sans-serif",
     },
-    colors: ["#5a7a6a"],
+    colors: ["#6c5ce7"],
     fill: {
       type: "gradient",
       gradient: {
@@ -127,10 +127,10 @@ export const AnalyticsDashboardView: React.FC = () => {
     stroke: { curve: "smooth", width: 2.5 },
     xaxis: {
       categories: ["00h", "04h", "08h", "12h", "16h", "20h", "Agora"],
-      labels: { style: { colors: "#4d5c52", fontSize: "11px" } },
+      labels: { style: { colors: "var(--text-secondary)", fontSize: "11px" } },
     },
     yaxis: {
-      labels: { style: { colors: "#4d5c52", fontSize: "11px" } },
+      labels: { style: { colors: "var(--text-secondary)", fontSize: "11px" } },
     },
     grid: { strokeDashArray: 4, borderColor: "#d2dbd5" },
     tooltip: { theme: "light" },
@@ -295,8 +295,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: "44px",
     height: "44px",
     borderRadius: "50%",
-    backgroundColor: "rgba(90, 122, 106, 0.15)",
-    border: "1px solid rgba(90, 122, 106, 0.3)",
+    backgroundColor: "rgba(108, 92, 231, 0.12)",
+    border: "1px solid rgba(108, 92, 231, 0.25)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

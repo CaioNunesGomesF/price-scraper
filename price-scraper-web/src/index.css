@@ -1,31 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-primary: #f2f5f3;        /* Soft sage off-white (highly pleasant) */
+  --bg-primary: #f8fafc;        /* Crisp modern clean background */
   --bg-secondary: #ffffff;      /* Pure white topbar/controls */
   --bg-card: #ffffff;           /* Clean white for product cards */
   --bg-input: #ffffff;          /* White backgrounds for selects & inputs */
   --btn-gray: #64748b;          /* Slate gray for buttons */
-  --bg-bubble-user: #5a7a6a;    /* Deep eucalyptus green for user bubble */
+  --bg-bubble-user: #6c5ce7;    /* Sleek royal purple for user bubble */
   --bg-bubble-ai: #ffffff;      /* White for AI message bubble */
-  --border: #d2dbd5;            /* Soft sage gray border */
-  --border-glow: rgba(90, 122, 106, 0.15);
-  --text-primary: #1e2b23;      /* Pine black for text readability */
-  --text-secondary: #4d5c52;    /* Dark sage text */
-  --text-muted: #7e9185;        /* Muted sage text */
+  --border: #e2e8f0;            /* Crisp subtle border */
+  --border-glow: rgba(108, 92, 231, 0.18);
+  --text-primary: #0f172a;      /* Deep slate black for high contrast readability */
+  --text-secondary: #475569;    /* Slate secondary */
+  --text-muted: #94a3b8;        /* Muted slate */
   
-  --accent: #5a7a6a;            /* Eucalyptus green accent instead of purple */
-  --accent-light: #7c998b;
+  --accent: #6c5ce7;            /* Royal Purple accent */
+  --accent-light: #8075ea;
   --accent-2: #00cec9;
   --accent-3: #fd79a8;
   
-  --success: #00b894;
-  --warning: #f1c40f;
-  --danger: #ff7675;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
   
-  --ml-color: #f39c12;
+  --ml-color: #ffd800;
   --olx-color: #8c52ff;
-  --amazon-color: #d35400;
+  --amazon-color: #ff9900;
   --ggmax-color: #00cec9;
 
   --radius-sm: 8px;
@@ -191,6 +191,17 @@ html, body {
   animation: pillPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
+.header-desktop-tab {
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.header-desktop-tab:hover {
+  background-color: rgba(108, 92, 231, 0.05);
+}
+.header-desktop-tab:hover span {
+  color: var(--text-primary) !important;
+}
+
+
 /* ─── Global Background Blobs & Grid Pattern ─────────── */
 .global-grid-bg {
   position: absolute;
@@ -215,7 +226,7 @@ html, body {
 .blob-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(164, 196, 181, 0.45) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
   top: -10%;
   right: -5%;
   animation: orb-float 15s ease-in-out infinite;
@@ -223,7 +234,7 @@ html, body {
 .blob-2 {
   width: 440px;
   height: 440px;
-  background: radial-gradient(circle, rgba(164, 196, 181, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(162, 155, 254, 0.14) 0%, transparent 70%);
   bottom: -10%;
   left: -5%;
   animation: orb-float-reverse 18s ease-in-out infinite;
@@ -231,7 +242,7 @@ html, body {
 .blob-3 {
   width: 380px;
   height: 380px;
-  background: radial-gradient(circle, rgba(90, 122, 106, 0.22) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
   top: 40%;
   left: 20%;
   animation: orb-float 22s ease-in-out infinite;
@@ -401,7 +412,15 @@ html, body {
   align-items: center;
 }
 
+.show-on-mobile-flex {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
+  .show-on-mobile-flex {
+    display: flex !important;
+  }
+  
   .mobile-bottom-nav {
     display: flex;
   }
@@ -498,3 +517,11 @@ html, body {
     font-size: 14px !important;
   }
 }
+
+/* ─── Live Search Preview Styles ─────────────────────── */
+.live-preview-card:hover {
+  background-color: rgba(90, 122, 106, 0.08) !important;
+  border-color: rgba(90, 122, 106, 0.2) !important;
+  transform: translateX(2px);
+}
+

@@ -184,7 +184,7 @@ export const PlatformMultiSelect: React.FC<PlatformMultiSelectProps> = ({
             onClick={handleToggleAll}
             style={{
               ...styles.dropdownItem,
-              backgroundColor: isAllSelected ? "rgba(90, 122, 106, 0.12)" : "transparent",
+              backgroundColor: isAllSelected ? "rgba(108, 92, 231, 0.12)" : "transparent",
             }}
           >
             <div
@@ -214,7 +214,7 @@ export const PlatformMultiSelect: React.FC<PlatformMultiSelectProps> = ({
                 onClick={(e) => handleTogglePlatform(opt.id, e)}
                 style={{
                   ...styles.dropdownItem,
-                  backgroundColor: isChecked ? "rgba(90, 122, 106, 0.08)" : "transparent",
+                  backgroundColor: isChecked ? "rgba(108, 92, 231, 0.08)" : "transparent",
                 }}
               >
                 <div
@@ -350,7 +350,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: "var(--text-muted)",
   },
   menuHeaderCount: {
-    backgroundColor: "rgba(90, 122, 106, 0.12)",
+    backgroundColor: "rgba(108, 92, 231, 0.12)",
     color: "var(--accent)",
     padding: "1px 6px",
     borderRadius: "10px",

@@ -24,16 +24,16 @@ export const AnalyticsDashboardModal: React.FC<AnalyticsDashboardModalProps> = (
         barHeight: "55%",
       },
     },
-    colors: ["#5a7a6a"],
+    colors: ["#6c5ce7"],
     dataLabels: { enabled: true, style: { fontSize: "11px", colors: ["#ffffff"] } },
     xaxis: {
       categories: ["iPhone 13", "Conta Valorant", "Roblox", "Honda Civic", "Relógio Smartwatch", "MacBook M2"],
-      labels: { style: { colors: "#4d5c52", fontSize: "11px" } },
+      labels: { style: { colors: "var(--text-secondary)", fontSize: "11px" } },
     },
     yaxis: {
-      labels: { style: { colors: "#1e2b23", fontSize: "12px", fontWeight: 600 } },
+      labels: { style: { colors: "var(--text-primary)", fontSize: "12px", fontWeight: 600 } },
     },
-    grid: { strokeDashArray: 4, borderColor: "#d2dbd5" },
+    grid: { strokeDashArray: 4, borderColor: "var(--border)" },
     tooltip: { theme: "light" },
   };
 
@@ -51,7 +51,7 @@ export const AnalyticsDashboardModal: React.FC<AnalyticsDashboardModalProps> = (
       fontFamily: "'Plus Jakarta Sans', sans-serif",
     },
     labels: ["Eletrônicos", "Jogos & Contas", "Veículos", "Imóveis", "Outros"],
-    colors: ["#5a7a6a", "#00cec9", "#8c52ff", "#f39c12", "#64748b"],
+    colors: ["#6c5ce7", "#00cec9", "#8c52ff", "#f39c12", "#64748b"],
     legend: {
       position: "bottom",
       labels: { colors: "#1e2b23" },
@@ -317,8 +317,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: "36px",
     height: "36px",
     borderRadius: "50%",
-    backgroundColor: "rgba(90, 122, 106, 0.15)",
-    border: "1px solid rgba(90, 122, 106, 0.3)",
+    backgroundColor: "rgba(108, 92, 231, 0.12)",
+    border: "1px solid rgba(108, 92, 231, 0.25)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

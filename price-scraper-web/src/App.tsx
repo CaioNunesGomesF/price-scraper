@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  searchApi,
-  type Category,
-  type Platform,
-  type SortBy,
-} from "./services/searchApi";
+import { searchApi } from "./services/searchApi";
 import { Search, Home } from "lucide-react";
 import { WelcomeHero } from "./features/search/components/WelcomeHero";
-import { FilterStrip } from "./features/search/components/FilterStrip";
 import { Header } from "./features/search/components/Header";
 import { IntegratedPlatformsModal } from "./features/search/components/IntegratedPlatformsModal";
 import { AnalyticsDashboardView } from "./features/analytics/components/AnalyticsDashboardView";
@@ -19,6 +13,7 @@ import { AuthModal, type UserProfile } from "./features/auth/components/AuthModa
 import { ChatMessageItem, type ChatMessage } from "./features/search/components/ChatMessageItem";
 import { ListingItem } from "./services/searchApi";
 import { favoritesApi } from "./services/favoritesApi";
+import { LiveSearchPreview } from "./features/search/components/LiveSearchPreview";
 
 export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -31,11 +26,6 @@ export default function App() {
   ]);
   const [query, setQuery] = useState("");
   
-  const [category, setCategory] = useState<Category>("OUTROS");
-  const [platform, setPlatform] = useState<Platform>("ALL");
-  const [sortBy, setSortBy] = useState<SortBy>("price_asc");
-  const [minPrice, setMinPrice] = useState<number | "">("");
-  const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [activeTab, setActiveTab] = useState<"search" | "analytics" | "favorites" | "sources">("search");
@@ -128,13 +118,75 @@ export default function App() {
     }
   }, [messages]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [liveResults, setLiveResults] = useState<ListingItem[]>([]);
+  const [liveTotal, setLiveTotal] = useState<number>(0);
+  const [isLiveLoading, setIsLiveLoading] = useState<boolean>(false);
+  const [isLiveFromCache, setIsLiveFromCache] = useState<boolean>(false);
+  const [showLivePreview, setShowLivePreview] = useState<boolean>(false);
+  const searchInputWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Debounced live search as user types
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (trimmed.length < 2) {
+      setShowLivePreview(false);
+      setLiveResults([]);
+      setIsLiveLoading(false);
+      return;
+    }
+
+    setIsLiveLoading(true);
+    setShowLivePreview(true);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(async () => {
+      try {
+        const res = await searchApi.search(
+          { q: trimmed },
+          controller.signal
+        );
+        setLiveResults(res.results || []);
+        setLiveTotal(res.total || 0);
+        setIsLiveFromCache(Boolean(res.fromCache));
+        setIsLiveLoading(false);
+      } catch (err: any) {
+        if (err.name !== "CanceledError" && err.name !== "AbortError" && err.code !== "ERR_CANCELED") {
+          setIsLiveLoading(false);
+        }
+      }
+    }, 380);
+
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [query]);
+
+  // Click outside to dismiss live preview
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        searchInputWrapperRef.current &&
+        !searchInputWrapperRef.current.contains(e.target as Node)
+      ) {
+        setShowLivePreview(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!query.trim()) return;
 
+    setShowLivePreview(false);
     const currentQuery = query.trim();
     const userMsgId = Math.random().toString();
     const systemMsgId = Math.random().toString();
+
+    // If we already have live results ready for this exact query, render them with 0ms wait!
+    const hasInstantResults = liveResults.length > 0 && !isLiveLoading;
 
     setMessages((prev) => [
       ...prev,
@@ -147,22 +199,32 @@ export default function App() {
       {
         id: systemMsgId,
         sender: "system",
-        text: `Consultando as fontes e processando dados para "${currentQuery}"...`,
+        text: hasInstantResults
+          ? `Busca finalizada! Encontrei ${liveTotal} ofertas para "${currentQuery}".`
+          : `Consultando as fontes e processando dados para "${currentQuery}"...`,
         timestamp: new Date(),
-        isSearching: true,
+        isSearching: !hasInstantResults,
+        results: hasInstantResults ? liveResults : undefined,
+        meta: hasInstantResults
+          ? {
+              fromCache: isLiveFromCache,
+              total: liveTotal,
+              category: "GERAL",
+              query: currentQuery,
+            }
+          : undefined,
       },
     ]);
 
     setQuery("");
 
+    if (hasInstantResults) {
+      return;
+    }
+
     try {
       const res = await searchApi.search({
         q: currentQuery,
-        category,
-        platform,
-        sortBy,
-        minPrice: minPrice === "" ? undefined : minPrice,
-        maxPrice: maxPrice === "" ? undefined : maxPrice,
       });
 
       setMessages((prev) =>
@@ -177,7 +239,7 @@ export default function App() {
               meta: {
                 fromCache: res.fromCache,
                 total: res.total,
-                category: res.category,
+                category: res.category || "GERAL",
                 query: currentQuery,
               },
             };
@@ -205,40 +267,48 @@ export default function App() {
 
   const renderSearchForm = () => (
     <form onSubmit={handleSearch} style={styles.searchForm}>
-      <FilterStrip
-        category={category}
-        setCategory={setCategory}
-        platform={platform}
-        setPlatform={setPlatform}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        minPrice={minPrice}
-        setMinPrice={setMinPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-      />
-
-      <div style={styles.inputContainer}>
-        {!isWelcomeState && (
-          <button
-            type="button"
-            onClick={handleNewSearch}
-            style={styles.homeInputBtn}
-            title="Voltar ao Início"
-          >
-            <Home size={16} color="var(--accent)" />
+      <div ref={searchInputWrapperRef} style={{ position: "relative", width: "100%", zIndex: 100 }}>
+        <div style={styles.inputContainer}>
+          {!isWelcomeState && (
+            <button
+              type="button"
+              onClick={handleNewSearch}
+              style={styles.homeInputBtn}
+              title="Voltar ao Início"
+            >
+              <Home size={16} color="var(--accent)" />
+            </button>
+          )}
+          <input
+            type="text"
+            placeholder="Pesquise produtos em tempo real (ex: iPhone 13, notebook, conta valorant...)"
+            value={query}
+            onFocus={() => {
+              if (query.trim().length >= 2) setShowLivePreview(true);
+            }}
+            onChange={(e) => setQuery(e.target.value)}
+            style={styles.mainInput}
+          />
+          <button type="submit" style={styles.sendBtn}>
+            <Search size={18} color="#fff" />
           </button>
-        )}
-        <input
-          type="text"
-          placeholder="Pesquise produtos em tempo real (ex: iPhone 13, notebook, conta valorant...)"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={styles.mainInput}
+        </div>
+
+        {/* Real-time Debounced Live Search Preview Dropdown */}
+        <LiveSearchPreview
+          isOpen={showLivePreview}
+          isLoading={isLiveLoading}
+          query={query}
+          results={liveResults}
+          total={liveTotal}
+          fromCache={isLiveFromCache}
+          onSelectProduct={(prod) => {
+            setSelectedFavProduct(prod);
+            setShowLivePreview(false);
+          }}
+          onViewAll={() => handleSearch()}
+          onClose={() => setShowLivePreview(false)}
         />
-        <button type="submit" style={styles.sendBtn}>
-          <Search size={18} color="#fff" />
-        </button>
       </div>
     </form>
   );
@@ -524,8 +594,8 @@ const styles: Record<string, React.CSSProperties> = {
     width: "34px",
     height: "34px",
     borderRadius: "50%",
-    backgroundColor: "rgba(90, 122, 106, 0.12)",
-    border: "1px solid rgba(90, 122, 106, 0.3)",
+    backgroundColor: "rgba(108, 92, 231, 0.12)",
+    border: "1px solid rgba(108, 92, 231, 0.25)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

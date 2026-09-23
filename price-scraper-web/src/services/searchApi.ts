@@ -82,8 +82,8 @@ export interface CompareResponse {
 }
 
 export const searchApi = {
-  search: async (params: SearchParams): Promise<SearchResponse> => {
-    const response = await api.get<any>("/search", { params });
+  search: async (params: SearchParams, signal?: AbortSignal): Promise<SearchResponse> => {
+    const response = await api.get<any>("/search", { params, signal });
     return {
       status: response.data.status,
       query: response.data.query,

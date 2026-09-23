@@ -1,4 +1,6 @@
+// @ts-ignore
 import { addExtra } from "puppeteer-extra";
+// @ts-ignore
 import vanillaPuppeteer, { type Browser } from "puppeteer-core";
 // @ts-ignore — pacote sem tipos bundled
 import StealthPlugin from "puppeteer-extra-plugin-stealth";

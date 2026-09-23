@@ -176,7 +176,6 @@ export const PlatformMultiSelect: React.FC<PlatformMultiSelectProps> = ({
         <div style={styles.dropdownMenu} className="select-dropdown-anim">
           <div style={styles.menuHeader}>
             <span style={styles.menuHeaderTitle}>Filtrar por Marketplace</span>
-            <span style={styles.menuHeaderCount}>{selectedList.length} de 4</span>
           </div>
 
           {/* Option: Selecionar Todas */}
